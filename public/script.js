@@ -1,10 +1,8 @@
-// ===== Nopal Note — To Do List =====
-// Penyimpanan data di localStorage (browser) tanpa library tambahan.
+// ===== Nopal Note — Fullstack To Do List =====
 
-const STORAGE_KEY = "nopal-note.todos";
 const THEME_KEY = "nopal-note.theme";
+const API_URL = "/api/todos";
 
-// Ambil elemen DOM
 const form = document.getElementById("todoForm");
 const input = document.getElementById("todoInput");
 const list = document.getElementById("todoList");
@@ -14,56 +12,58 @@ const clearDoneBtn = document.getElementById("clearDone");
 const filterBtns = document.querySelectorAll(".filter");
 const themeToggle = document.getElementById("themeToggle");
 
-// State aplikasi
-let todos = loadTodos();
+let todos = [];
 let currentFilter = "all";
 
-// ===== Penyimpanan =====
-function loadTodos() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  } catch {
-    return [];
-  }
+async function loadTodos() {
+  const res = await fetch(API_URL);
+  todos = await res.json();
+  render();
 }
 
-function saveTodos() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-}
-
-// ===== Aksi data =====
-function addTodo(text) {
-  todos.unshift({
-    id: Date.now().toString(),
-    text: text.trim(),
-    done: false,
+async function addTodo(text) {
+  await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ text }),
   });
-  saveTodos();
-  render();
+
+  await loadTodos();
 }
 
-function toggleTodo(id) {
+async function toggleTodo(id) {
   const todo = todos.find((t) => t.id === id);
-  if (todo) {
-    todo.done = !todo.done;
-    saveTodos();
-    render();
-  }
+  if (!todo) return;
+
+  await fetch(`${API_URL}/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ done: !todo.done }),
+  });
+
+  await loadTodos();
 }
 
-function deleteTodo(id) {
-  todos = todos.filter((t) => t.id !== id);
-  saveTodos();
-  render();
+async function deleteTodo(id) {
+  await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  await loadTodos();
 }
 
-function clearDone() {
-  todos = todos.filter((t) => !t.done);
-  saveTodos();
-  render();
+async function clearDone() {
+  await fetch("/api/todos-done", {
+    method: "DELETE",
+  });
+
+  await loadTodos();
 }
 
-// ===== Render =====
 function getFilteredTodos() {
   if (currentFilter === "active") return todos.filter((t) => !t.done);
   if (currentFilter === "done") return todos.filter((t) => t.done);
@@ -101,20 +101,20 @@ function render() {
     list.appendChild(li);
   });
 
-  // Empty state
   emptyState.classList.toggle("is-visible", visible.length === 0);
 
-  // Counter (jumlah tugas aktif)
   const remaining = todos.filter((t) => !t.done).length;
   counter.textContent = `${remaining} tugas tersisa`;
 }
 
-// ===== Event listeners =====
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const text = input.value.trim();
   if (!text) return;
-  addTodo(text);
+
+  await addTodo(text);
+
   input.value = "";
   input.focus();
 });
@@ -130,7 +130,6 @@ filterBtns.forEach((btn) => {
   });
 });
 
-// ===== Tema (light/dark) =====
 function applyTheme(theme) {
   if (theme === "dark") {
     document.documentElement.setAttribute("data-theme", "dark");
@@ -148,6 +147,5 @@ themeToggle.addEventListener("click", () => {
   applyTheme(next);
 });
 
-// ===== Inisialisasi =====
 applyTheme(localStorage.getItem(THEME_KEY) || "light");
-render();
+loadTodos();
