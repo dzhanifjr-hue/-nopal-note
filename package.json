@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "node server.js"
-},
+    "start": "node server.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dzhanifjr-hue/-nopal-note.git"
@@ -22,5 +22,8 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "sqlite3": "^6.0.1"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
