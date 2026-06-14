@@ -1,0 +1,311 @@
+:root {
+  --bg: #eef1f8;
+  --bg-grad-1: #6366f1;
+  --bg-grad-2: #8b5cf6;
+  --card: #ffffff;
+  --text: #1e2233;
+  --text-soft: #6b7190;
+  --border: #e6e8f0;
+  --primary: #6366f1;
+  --primary-soft: #eef0ff;
+  --danger: #ef4444;
+  --done: #9aa0bd;
+  --shadow: 0 20px 45px -20px rgba(67, 56, 202, 0.45);
+  --radius: 16px;
+}
+
+[data-theme="dark"] {
+  --bg: #0f1220;
+  --card: #1a1e30;
+  --text: #eef0fa;
+  --text-soft: #8b91b3;
+  --border: #2a3050;
+  --primary: #818cf8;
+  --primary-soft: #232a47;
+  --done: #5a6088;
+  --shadow: 0 20px 45px -20px rgba(0, 0, 0, 0.7);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 0%, var(--bg-grad-1) 0%, transparent 45%),
+    radial-gradient(circle at 85% 100%, var(--bg-grad-2) 0%, transparent 45%),
+    var(--bg);
+  background-attachment: fixed;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(16px, 5vw, 48px);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.app {
+  width: 100%;
+  max-width: 560px;
+  background: var(--card);
+  border-radius: 24px;
+  padding: clamp(20px, 4vw, 32px);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.app__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.app__title h1 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.app__title p {
+  margin-top: 4px;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.theme-toggle {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--primary-soft);
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: grid;
+  place-items: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+}
+
+/* Form */
+.todo-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.todo-form__input {
+  flex: 1;
+  padding: 14px 16px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.todo-form__input::placeholder {
+  color: var(--text-soft);
+}
+
+.todo-form__input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+.todo-form__btn {
+  width: 52px;
+  border: none;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.2s ease;
+}
+
+.todo-form__btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+.todo-form__btn:active {
+  transform: scale(0.96);
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: flex;
+  gap: 4px;
+  background: var(--bg);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.filter {
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.filter.is-active {
+  background: var(--card);
+  color: var(--primary);
+  box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.15);
+}
+
+.clear-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 7px 10px;
+  border-radius: 9px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.clear-btn:hover {
+  color: var(--danger);
+  background: var(--bg);
+}
+
+/* List */
+.todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.todo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  animation: pop 0.25s ease;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.todo__check {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--text-soft);
+  border-radius: 7px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.todo__check:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.todo__check:checked::after {
+  content: "✓";
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.todo__text {
+  flex: 1;
+  font-size: 0.97rem;
+  word-break: break-word;
+  cursor: pointer;
+}
+
+.todo.is-done .todo__text {
+  color: var(--done);
+  text-decoration: line-through;
+}
+
+.todo__delete {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 1.1rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.todo__delete:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger);
+}
+
+/* Empty state */
+.empty {
+  display: none;
+  text-align: center;
+  padding: 36px 16px;
+  color: var(--text-soft);
+}
+
+.empty.is-visible {
+  display: block;
+}
+
+.empty__art {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+/* Footer */
+.app__footer {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  text-align: center;
+}

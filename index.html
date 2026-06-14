@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nopal Note — To Do List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app__header">
+      <div class="app__title">
+        <h1>Nopal Note</h1>
+        <p>Tetap produktif, satu tugas dalam satu waktu.</p>
+      </div>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Ganti tema">
+        <span class="theme-toggle__icon">🌙</span>
+      </button>
+    </header>
+
+    <form id="todoForm" class="todo-form" autocomplete="off">
+      <input
+        id="todoInput"
+        class="todo-form__input"
+        type="text"
+        placeholder="Apa yang ingin kamu kerjakan?"
+        maxlength="200"
+        required
+      />
+      <button class="todo-form__btn" type="submit" aria-label="Tambah tugas">
+        <span>+</span>
+      </button>
+    </form>
+
+    <div class="toolbar">
+      <div class="filters" role="tablist">
+        <button class="filter is-active" data-filter="all" type="button">Semua</button>
+        <button class="filter" data-filter="active" type="button">Aktif</button>
+        <button class="filter" data-filter="done" type="button">Selesai</button>
+      </div>
+      <button id="clearDone" class="clear-btn" type="button">Hapus selesai</button>
+    </div>
+
+    <ul id="todoList" class="todo-list"></ul>
+
+    <div id="emptyState" class="empty">
+      <div class="empty__art">📝</div>
+      <p>Belum ada tugas. Tambahkan satu di atas!</p>
+    </div>
+
+    <footer class="app__footer">
+      <span id="counter">0 tugas tersisa</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
